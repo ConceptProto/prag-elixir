@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Servy.Handler do
   def handle(request) do
     request
@@ -6,6 +8,7 @@ defmodule Servy.Handler do
     |> route
     |> track
     |> log
+    |> emojify
     |> format_response
   end
 
@@ -32,6 +35,20 @@ defmodule Servy.Handler do
     %{conv | path: "/wildthings"}
   end
 
+  def rewrite_path(%{path: path} = conv) do
+    uri = URI.parse(path)
+    params = URI.decode_query(uri.query || "")
+
+    IO.inspect(params)
+
+    if params["id"] do
+      pathname = uri.path <> "/" <> params["id"]
+      %{conv | path: pathname}
+    else
+      conv
+    end
+  end
+
   def rewrite_path(conv), do: conv
 
   def route(%{method: "GET", path: "/wildthings"} = conv) do
@@ -46,11 +63,16 @@ defmodule Servy.Handler do
     %{conv | status: 200, resp_body: "Bear #{id}"}
   end
 
+  def route(%{method: "GET", path: "/goats/" <> id} = conv) do
+    %{conv | status: 200, resp_body: "Goat #{id}"}
+  end
+
   def route(%{method: "DELETE", path: "/bears/" <> _id} = conv) do
     %{conv | status: 403, resp_body: "Deleting a bear is forbidden!"}
   end
 
   def route(%{path: path} = conv) do
+    Logger.error("Please check the url")
     %{conv | status: 404, resp_body: "No #{path} here!"}
   end
 
@@ -64,6 +86,12 @@ defmodule Servy.Handler do
       500 => "Internal Server Error"
     }[code]
   end
+
+  def emojify(%{status: 200, resp_body: resp_body} = conv) do
+    %{conv | resp_body: "🎉🎉🎉🎉🎉\n\n" <> resp_body <> "\n\n🎉🎉🎉🎉🎉"}
+  end
+
+  def emojify(conv), do: conv
 
   def format_response(conv) do
     """
@@ -85,7 +113,7 @@ end
 # """
 
 request = """
-GET /wildlife HTTP/1.1
+GET /bears HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
@@ -109,7 +137,8 @@ Accept: */*
 # """
 
 response = Servy.Handler.handle(request)
-IO.inspect(response)
+# IO.inspect(response)
+IO.puts(response)
 
 # conv = %{method: "GET", path: "/wildthings", resp_body: "Bears, Lions, Tigers"}
 
