@@ -104,13 +104,16 @@ defmodule Servy.Handler do
   end
 end
 
-# request = """
-# GET /wildthings HTTP/1.1
-# HOST: example.com
-# User-Agent: ExampleBrowser/1.0
-# Accept: */*
+request = """
+GET /wildthings HTTP/1.1
+HOST: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
 
-# """
+"""
+
+response = Servy.Handler.handle(request)
+IO.puts(response)
 
 request = """
 GET /bears HTTP/1.1
@@ -120,26 +123,28 @@ Accept: */*
 
 """
 
-# request = """
-# GET /bigfoot HTTP/1.1
-# HOST: example.com
-# User-Agent: ExampleBrowser/1.0
-# Accept: */*
+response = Servy.Handler.handle(request)
+IO.puts(response)
 
-# """
+request = """
+GET /bigfoot HTTP/1.1
+HOST: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
 
-# expected_response = """
-# HTTPS/1.1 200 OK
-# Content-Type: text/html
-# Content-Length: 20
+"""
 
-# Bears, Lions, Tigers
-# """
+response = Servy.Handler.handle(request)
+IO.puts(response)
+
+request = """
+GET /bears?id=250 HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
 
 response = Servy.Handler.handle(request)
 # IO.inspect(response)
 IO.puts(response)
-
-# conv = %{method: "GET", path: "/wildthings", resp_body: "Bears, Lions, Tigers"}
-
-# [bears, lions, tigers] = conv.resp_body |> String.split(" ")
