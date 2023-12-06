@@ -71,9 +71,45 @@ defmodule Servy.Handler do
     %{conv | status: 403, resp_body: "Deleting a bear is forbidden!"}
   end
 
+  def route(%{method: "GET", path: "/about"} = conv) do
+    Path.expand("../../pages", __DIR__)
+    |> Path.join("about.html")
+    |> File.read()
+    |> handle_file(conv)
+  end
+
+  # def route(%{method: "GET", path: "/about"} = conv) do
+  #   file =
+  #     Path.expand("../../pages", __DIR__)
+  #     |> Path.join("about.html")
+
+  #   case File.read(file) do
+  #     {:ok, contents} ->
+  #       %{conv | status: 200, resp_body: contents}
+
+  #     {:error, :enoent} ->
+  #       %{conv | status: 404, resp_body: "File not found"}
+
+  #     {:error, reason} ->
+  #       %{conv | status: 500, resp_body: "File error: #{reason}"}
+  #   end
+  # end
+
   def route(%{path: path} = conv) do
     Logger.error("Please check the url")
     %{conv | status: 404, resp_body: "No #{path} here!"}
+  end
+
+  def handle_file({:ok, content}, conv) do
+    %{conv | status: 200, resp_body: content}
+  end
+
+  def handle_file({:error, :enoent}, conv) do
+    %{conv | status: 404, resp_body: "File not found"}
+  end
+
+  def handle_file({:error, reason}, conv) do
+    %{conv | status: 500, resp_body: "File error: #{reason}"}
   end
 
   defp status_reason(code) do
@@ -146,5 +182,15 @@ Accept: */*
 """
 
 response = Servy.Handler.handle(request)
-# IO.inspect(response)
+IO.puts(response)
+
+request = """
+GET /about HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+
+response = Servy.Handler.handle(request)
 IO.puts(response)
