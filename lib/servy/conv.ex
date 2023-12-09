@@ -1,5 +1,5 @@
 defmodule Servy.Conv do
-  defstruct method: "", path: "", status: nil, resp_body: ""
+  defstruct method: "", path: "", status: nil, resp_body: "", params: ""
 
   def full_status(conv) do
     "#{conv.status} #{status_reason(conv.status)}"
@@ -16,3 +16,5 @@ defmodule Servy.Conv do
     }[code]
   end
 end
+
+# ["POST /bears HTTP/1.1", "Host: example.com", "User-Agent: ExampleBrowser/1.0", "Accept: */*", "Content-Type: application/X-www-form-urlencoded", "Content-Length: 21", "", "name=Baloo&type=Brown", ""]

@@ -8,6 +8,15 @@ defmodule Servy.Parser do
       |> List.first()
       |> String.split(" ")
 
-    %Conv{method: method, path: path}
+    params = parse_params(%Conv{method: "POST"}, request)
+
+    %Conv{method: method, path: path, params: params}
+  end
+
+  defp parse_params(_method, request) do
+    request
+    |> String.split("\n")
+    |> Enum.at(-2)
+    |> URI.decode_query()
   end
 end
