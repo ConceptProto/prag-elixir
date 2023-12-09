@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Servy.Parser do
   alias Servy.Conv
 
@@ -10,7 +12,13 @@ defmodule Servy.Parser do
 
     params = parse_params(%Conv{method: "POST"}, request)
 
-    %Conv{method: method, path: path, params: params}
+    case Enum.empty?(params) do
+      true ->
+        Logger.error("POST method has no params")
+
+      false ->
+        %Conv{method: method, path: path, params: params}
+    end
   end
 
   defp parse_params(_method, request) do
