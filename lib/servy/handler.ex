@@ -42,6 +42,14 @@ defmodule Servy.Handler do
     %{conv | status: 200, resp_body: "Bear #{sub}"}
   end
 
+  def route(%Conv{method: "POST", error: "POST method has no params"} = conv) do
+    %{
+      conv
+      | status: 400,
+        resp_body: "#{conv.error}"
+    }
+  end
+
   def route(%Conv{method: "POST", path: "/bears"} = conv) do
     %{
       conv
@@ -96,6 +104,11 @@ defmodule Servy.Handler do
 
   def emojify(%Conv{status: 200, resp_body: resp_body} = conv) do
     %{conv | resp_body: "🎉🎉🎉🎉🎉\n\n" <> resp_body <> "\n\n🎉🎉🎉🎉🎉"}
+  end
+
+  def emojify(%Conv{status: status, resp_body: resp_body} = conv)
+      when status >= 400 and status <= 500 do
+    %{conv | resp_body: "🚨🚨🚨🚨🚨\n\n" <> resp_body <> "\n\n🚨🚨🚨🚨🚨"}
   end
 
   def emojify(%Conv{} = conv), do: conv
@@ -219,6 +232,32 @@ Content-Type: application/X-www-form-urlencoded
 Content-Length: 21
 
 name=Baloo&type=Brown
+"""
+
+response = Servy.Handler.handle(request)
+IO.puts(response)
+
+request = """
+POST /bears HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+Content-Type: application/X-www-form-urlencoded
+Content-Length: 21
+
+"""
+
+response = Servy.Handler.handle(request)
+IO.puts(response)
+
+request = """
+POST /bears HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 21
+
 """
 
 response = Servy.Handler.handle(request)
