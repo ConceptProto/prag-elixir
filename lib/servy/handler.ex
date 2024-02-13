@@ -262,5 +262,3 @@ Content-Length: 21
 
 response = Servy.Handler.handle(request)
 IO.puts(response)
-
-IO.puts("🚧🚧🚧🚧🚧")
