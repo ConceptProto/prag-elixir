@@ -57,7 +57,8 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "DELETE", path: "/bears/" <> _id} = conv) do
-    %{conv | status: 403, resp_body: "Deleting a bear is forbidden!"}
+    # %{conv | status: 403, resp_body: "Deleting a bear is forbidden!"}
+    BearsController.delete(conv, conv.params)
   end
 
   def route(%Conv{method: "GET", path: "/goats/" <> id} = conv) do
@@ -137,43 +138,41 @@ end
 # response = Servy.Handler.handle(request)
 # IO.puts(response)
 
-request = """
-GET /bears HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
+# request = """
+# GET /bears HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
 
-"""
+# """
 
-response = Servy.Handler.handle(request)
-IO.puts(response)
+# response = Servy.Handler.handle(request)
+# IO.puts(response)
 
-request = """
-GET /bears?id=9 HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
+# request = """
+# GET /bears?id=9 HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
 
-"""
+# """
 
-response = Servy.Handler.handle(request)
-IO.puts(response)
+# response = Servy.Handler.handle(request)
+# IO.puts(response)
 
-request = """
-POST /bears HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
-Content-Type: application/X-www-form-urlencoded
-Content-Length: 21
+# request = """
+# POST /bears HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
+# Content-Type: application/X-www-form-urlencoded
+# Content-Length: 21
 
-name=Baloo&type=Brown
-"""
+# name=Baloo&type=Brown
+# """
 
-response = Servy.Handler.handle(request)
-IO.puts(response)
-
-IO.inspect("🚧🚧")
+# response = Servy.Handler.handle(request)
+# IO.puts(response)
 
 # request = """
 # GET /bigfoot HTTP/1.1
@@ -266,3 +265,16 @@ IO.inspect("🚧🚧")
 
 # response = Servy.Handler.handle(request)
 # IO.puts(response)
+
+request = """
+DELETE /bears?id=5 HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+
+response = Servy.Handler.handle(request)
+IO.puts(response)
+
+IO.inspect("🚧")
