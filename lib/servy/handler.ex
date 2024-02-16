@@ -138,27 +138,29 @@ end
 # response = Servy.Handler.handle(request)
 # IO.puts(response)
 
-# request = """
-# GET /bears HTTP/1.1
-# Host: example.com
-# User-Agent: ExampleBrowser/1.0
-# Accept: */*
+request = """
+GET /bears HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
 
-# """
+"""
 
-# response = Servy.Handler.handle(request)
-# IO.puts(response)
+response = Servy.Handler.handle(request)
+IO.puts(response)
 
-# request = """
-# GET /bears?id=9 HTTP/1.1
-# Host: example.com
-# User-Agent: ExampleBrowser/1.0
-# Accept: */*
+request = """
+GET /bears?id=9 HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
 
-# """
+"""
 
-# response = Servy.Handler.handle(request)
-# IO.puts(response)
+response = Servy.Handler.handle(request)
+IO.puts(response)
+
+IO.inspect("🚧🚧")
 
 # request = """
 # POST /bears HTTP/1.1
@@ -266,15 +268,13 @@ end
 # response = Servy.Handler.handle(request)
 # IO.puts(response)
 
-request = """
-DELETE /bears?id=5 HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
+# request = """
+# DELETE /bears?id=5 HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
 
-"""
+# """
 
-response = Servy.Handler.handle(request)
-IO.puts(response)
-
-IO.inspect("🚧")
+# response = Servy.Handler.handle(request)
+# IO.puts(response)
