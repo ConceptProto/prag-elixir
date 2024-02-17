@@ -23,6 +23,7 @@ defmodule Servy.Recurse do
   end
 end
 
+# Uncomment to run
 # nums = [1, 2, 3, 4, 5]
 # tmp = Servy.Recurse.my_map(nums, &(&1 * 2))
 # IO.inspect(tmp)
