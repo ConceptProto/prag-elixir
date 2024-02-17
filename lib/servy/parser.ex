@@ -6,7 +6,7 @@ defmodule Servy.Parser do
   def parse(request) do
     [method, path, _protocol] =
       request
-      |> String.split("\n")
+      |> String.split("\r\n")
       |> List.first()
       |> String.split(" ")
 
@@ -30,18 +30,19 @@ defmodule Servy.Parser do
     }
   end
 
-  defp parse_params("POST", %{"Content-Type" => content_type}, request) when content_type == "application/X-www-form-urlencoded" do
+  def parse_params("POST", %{"Content-Type" => content_type}, request)
+      when content_type == "application/X-www-form-urlencoded" do
     request
-    |> String.split("\n")
+    |> String.split("\r\n")
     |> Enum.at(-2)
     |> URI.decode_query()
   end
 
-  defp parse_params(_method, _headers, _request), do: %{}
+  def parse_params(_method, _headers, _request), do: %{}
 
-  defp parse_headers(request) do
+  def parse_headers(request) do
     request
-    |> String.split("\n")
+    |> String.split("\r\n")
     |> Enum.slice(1..5)
     |> Enum.reject(&(&1 == ""))
     |> Enum.map(fn x ->
@@ -53,22 +54,4 @@ defmodule Servy.Parser do
       Map.merge(x, acc)
     end)
   end
-
-  # defp parse_headers(request) do
-  #   request
-  #   |> String.split("\n")
-  #   |> parse_headers_recursively(%{})
-  # end
-
-  # defp parse_headers_recursively([head | tail], headers) do
-  #   if String.contains?(head, ": ") do
-  #     [key, value] = String.split(head, ": ")
-  #     headers = Map.put(headers, key, value)
-  #     parse_headers_recursively(tail, headers)
-  #   else
-  #     parse_headers_recursively(tail, headers)
-  #   end
-  # end
-
-  # defp parse_headers_recursively([], headers), do: headers
 end

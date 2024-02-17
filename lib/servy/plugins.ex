@@ -7,7 +7,13 @@ defmodule Servy.Plugins do
     conv
   end
 
-  def track(%Conv{} = conv), do: conv
+  def track(%Conv{} = conv) do
+    if Mix.env() != :test do
+      IO.puts("Warning: #(path} is on the loose!")
+    end
+
+    conv
+  end
 
   def rewrite_path(%Conv{path: "/wildlife"} = conv) do
     %{conv | path: "/wildthings"}
@@ -27,5 +33,11 @@ defmodule Servy.Plugins do
 
   def rewrite_path(%Conv{} = conv), do: conv
 
-  def log(%Conv{} = conv), do: IO.inspect(conv)
+  def log(%Conv{} = conv) do
+    if Mix.env() == :dev do
+      IO.inspect(conv)
+    end
+
+    conv
+  end
 end

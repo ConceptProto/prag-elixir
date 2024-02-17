@@ -19,7 +19,7 @@ defmodule Servy.Recurse do
 
     deck = for rank <- ranks, suit <- suits, do: {rank, suit}
 
-    Enum.each(1..52, fn x -> IO.inspect(Enum.random(deck)) end)
+    Enum.each(1..52, fn _x -> IO.inspect(Enum.random(deck)) end)
   end
 end
 
