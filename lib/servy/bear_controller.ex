@@ -1,4 +1,4 @@
-defmodule Servy.BearsController do
+defmodule Servy.BearController do
   alias Servy.Wildthings
 
   import Servy.View, only: [render: 3]

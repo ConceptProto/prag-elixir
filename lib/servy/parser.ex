@@ -4,6 +4,8 @@ defmodule Servy.Parser do
   alias Servy.Conv
 
   def parse(request) do
+    # IO.inspect(request, label: "request - 🚧")
+
     [method, path, _protocol] =
       request
       |> String.split("\r\n")
@@ -13,10 +15,14 @@ defmodule Servy.Parser do
     # IO.inspect(method, label: "method - 🚧")
     # IO.inspect(path, label: "path - 🚧")
 
-    headers = parse_headers(request)
+    headers =
+      parse_headers(request)
+
     # |> IO.inspect(label: "headers - 🚧")
 
-    params = parse_params(method, headers, request)
+    params =
+      parse_params(method, headers, request)
+
     # |> IO.inspect(label: "params - 🚧")
 
     error = if(params == %{}, do: "POST method has no params")
