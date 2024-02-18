@@ -23,6 +23,8 @@ defmodule Servy.Wildthings do
   #   Poison.decode!(json, as: %{"bears" => [%Bear{}]})
   # end
 
+  # TODO: Seems like I need to read the json as well
+
   def get_bear(id) when is_integer(id) do
     list_bears()
     |> Enum.find(fn bear -> bear.id == id end)
