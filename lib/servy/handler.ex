@@ -33,6 +33,10 @@ defmodule Servy.Handler do
     Api.BearController.index(conv)
   end
 
+  def route(%Conv{method: "POST", path: "/api/bears"} = conv) do
+    Api.BearController.create(conv, conv.params)
+  end
+
   def route(%Conv{method: "GET", path: "/bears"} = conv) do
     BearController.index(conv)
   end
@@ -89,7 +93,8 @@ defmodule Servy.Handler do
   end
 
   def emojify(
-        %Conv{status: 200, resp_body: resp_body, headers: %{"Content-Type" => "text/html"}} = conv
+        %Conv{status: 200, resp_body: resp_body, resp_headers: %{"Content-Type" => "text/html"}} =
+          conv
       ) do
     %{conv | resp_body: "🎉" <> resp_body <> "🎉"}
   end
@@ -115,14 +120,3 @@ defmodule Servy.Handler do
     """
   end
 end
-
-request = """
-GET /api/bears HTTPS/1.1\r
-Host: example.com\r
-User-Agent: ExampleBrowser/1.0\r
-Accept: */*\r
-\r
-"""
-
-res = Servy.Handler.handle(request)
-IO.inspect(res, label: "1")

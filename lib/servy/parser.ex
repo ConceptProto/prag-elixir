@@ -44,6 +44,20 @@ defmodule Servy.Parser do
     |> URI.decode_query()
   end
 
+  def parse_params("POST", %{"Content-Type" => content_type}, request)
+      when content_type == "application/json" do
+    request
+    |> IO.inspect(label: "parse params 1")
+    |> String.split("\r\n")
+    |> IO.inspect(label: "parse params 2")
+    |> Enum.at(-1)
+    |> IO.inspect(label: "parse params 3")
+    |> Poison.Parser.parse!(%{})
+    |> IO.inspect(label: "parse params 4")
+
+    # |> URI.decode_query()
+  end
+
   def parse_params(_method, _headers, _request), do: %{}
 
   def parse_headers(request) do
