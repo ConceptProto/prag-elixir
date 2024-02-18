@@ -16,6 +16,13 @@ defmodule Servy.Wildthings do
     ]
   end
 
+  # def list_bears do
+  #   Path.expand("../../db", __DIR__)
+  #   TODO: Path.join
+  #   TODO: some more things here
+  #   Poison.decode!(json, as: %{"bears" => [%Bear{}]})
+  # end
+
   def get_bear(id) when is_integer(id) do
     list_bears()
     |> Enum.find(fn bear -> bear.id == id end)
