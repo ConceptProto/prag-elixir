@@ -5,7 +5,7 @@ defmodule Servy.Handler do
 
   import Servy.Plugins, only: [rewrite_path: 1, track: 1, log: 1]
   import Servy.Parser, only: [parse: 1]
-  import Servy.FileHandler, only: [handle_file: 2]
+  import Servy.FileHandler, only: [handle_file: 2, handle_file: 3]
 
   alias Servy.Conv
   alias Servy.BearController
@@ -79,6 +79,13 @@ defmodule Servy.Handler do
     |> Path.join("about.html")
     |> File.read()
     |> handle_file(conv)
+  end
+
+  def route(%Conv{method: "GET", path: "/pages/faq"} = conv) do
+    @pages_path
+    |> Path.join("faq.md")
+    |> File.read()
+    |> handle_file(conv, "markdown")
   end
 
   def route(%Conv{method: "GET", path: "/pages/" <> file} = conv) do

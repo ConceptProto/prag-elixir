@@ -338,9 +338,9 @@ defmodule HandlerTest do
     expected_response = """
     HTTPS/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 25\r
+    Content-Length: 660\r
     \r
-    🎉<h1>FAQ PAGE</h1>🎉
+    🎉<h1>\nFrequently Asked Questions</h1>\n<ul>\n  <li>\n    <p>\n<strong>Have you really seen Bigfoot?</strong>    </p>\n    <p>\nYes! In this <a href=\"https://www.youtube.com/watch?v=ZMBeN4Kr4LE\">totally believable video</a>!    </p>\n  </li>\n  <li>\n    <p>\n<strong>No, I mean seen Bigfoot <em>on the refuge</em>?</strong>    </p>\n    <p>\nOh! Not yet, but we’re <em>still looking</em>…    </p>\n  </li>\n  <li>\n    <p>\n<strong>Can you just show me some code?</strong>    </p>\n    <p>\nSure! Here’s some Elixir:    </p>\n    <pre><code class=\"elixir\">[&quot;Bigfoot&quot;, &quot;Yeti&quot;, &quot;Sasquatch&quot;] |&gt; Enum.random()</code></pre>\n  </li>\n</ul>\n🎉
     """
 
     assert remove_whitespace(response) == remove_whitespace(expected_response)
